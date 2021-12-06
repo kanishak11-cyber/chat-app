@@ -13,30 +13,25 @@ export default function Auth() {
     }=useContext(Context);
 
     // d59a5df5-6a75-4609-afed-570430180e28
-
+    const router = useRouter();
     function onSubmit(e) {
         
         e.preventDefault();
-        const username = e.target.elements.username.value;
-        const secret = e.target.elements.secret.value;
-        axios.post('http://localhost:3000/api/auth', {
-            username,
-            secret
-        })
-            .then(res => {
-                setUsername(username);
-                setSecret(secret);
-                router.push('/dashboard');
-            })
-            .catch(err => {
-                console.log(err);
-            });
+       
+        if(username.length === 0 || secret.length === 0) return ;
+        axios
+        .put(
+            "https://api.chatengine.io/users/",
+            { username, secret },
+            { headers: { "Private-key": "d59a5df5-6a75-4609-afed-570430180e28" } }
+        ).then((r) => router.push("/chats"));
     }
+    
 
     return (
         <div className="background">
             <div className="auth-container">
-                <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
+                <form className="auth-form" onSubmit={(e) => onSubmit(e)}>
                     <div className="auth-title">CHAT APP</div>
 
                     <div className="input-container">
