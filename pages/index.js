@@ -6,9 +6,33 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 export default function Auth() {
     const {
+        username,
+        secret,
         setUsername,
         setSecret,
     }=useContext(Context);
+
+    // d59a5df5-6a75-4609-afed-570430180e28
+
+    function onSubmit(e) {
+        
+        e.preventDefault();
+        const username = e.target.elements.username.value;
+        const secret = e.target.elements.secret.value;
+        axios.post('http://localhost:3000/api/auth', {
+            username,
+            secret
+        })
+            .then(res => {
+                setUsername(username);
+                setSecret(secret);
+                router.push('/dashboard');
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     return (
         <div className="background">
             <div className="auth-container">
